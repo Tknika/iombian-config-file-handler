@@ -1,0 +1,54 @@
+#!/usr/bin/env python3
+
+import logging
+import os
+import signal
+
+from iombian_yaml_handler import IoMBianYAMLHandler
+from reply_server import ReplyServer
+from sub_client import SubClient
+
+logging.basicConfig(format='%(asctime)s %(levelname)-8s - %(name)-16s - %(message)s', level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+YAML_FILE_PATH = "/boot/config/parameters.yml"
+SERVER_PORT = 5555
+CLIENT_PORT = 5556
+TOPIC_FILTER = "system_button_event"
+RESET_EVENT = "long_long_click"
+
+
+def config_update_callback():
+    logger.info("Rebooting the system")
+    os.system('reboot')
+
+
+def button_event_callback(event):
+    payload = event.replace(TOPIC_FILTER, ' ').strip()
+    logger.debug(f"'{payload}' event received")
+    if payload == RESET_EVENT:
+        yaml_handler.reset()
+
+
+def signal_handler(sig, frame):
+    logger.info("Stopping IoMBian Config File Handler")
+    server.stop()
+    client.stop()
+
+
+if __name__ == "__main__":
+    logger.info("Starting IoMBian Config File Handler")
+
+    yaml_handler = IoMBianYAMLHandler(YAML_FILE_PATH)
+    yaml_handler.on_config_update(config_update_callback)
+    yaml_handler.load_file()
+
+    server = ReplyServer(yaml_handler, port=SERVER_PORT)
+    server.start()
+
+    client = SubClient(topic_filter=TOPIC_FILTER, on_message_callback=button_event_callback, port=CLIENT_PORT)
+    client.start()
+
+    signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
+    signal.pause()
