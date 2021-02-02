@@ -66,4 +66,17 @@ class IoMBianYAMLHandler(YAMLHandler):
             del new_config["remote_configurator"]
         if "config_date" in new_config:
             new_config["config_date"] = ""
+        if "networking" in new_config:
+            default_networking = {  "eth0": {
+                                        "profile": "dhcp"
+                                    },
+                                    "wlan0": {
+                                        "profile": "dhcp",
+                                        "wlan": {
+                                            "ssid": "",
+                                            "psk": ""
+                                        }
+                                    }
+                                 }
+            new_config["networking"] = default_networking
         self.save_config(new_config)
