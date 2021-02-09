@@ -2,6 +2,7 @@
 
 import logging
 import threading
+import uuid
 from yaml_handler import YAMLHandler
 
 logger = logging.getLogger(__name__)
@@ -12,6 +13,7 @@ class IoMBianYAMLHandler(YAMLHandler):
     def __init__(self, yaml_file_path, default_device_id="iombian"):
         super().__init__(yaml_file_path)
         self.default_device_id = default_device_id
+        self.random_device_id = "iombian-{}".format(str(uuid.uuid4())[:8])
         self.update_callback = None
 
     def load_file(self):
@@ -31,6 +33,8 @@ class IoMBianYAMLHandler(YAMLHandler):
         return self.get_config_date()
 
     def get_device_id(self):
+        if not self.is_configured():
+            return self.random_device_id
         device_id = self.config.get("remote_configurator", {}).get("device_id")
         if not device_id:
             logger.debug("'parameters.yml' file does not contain a device identifier")
