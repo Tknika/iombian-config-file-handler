@@ -14,7 +14,6 @@ logger = logging.getLogger(__name__)
 YAML_FILE_PATH = "/boot/config/parameters.yml"
 SERVER_PORT = 5555
 CLIENT_PORT = 5556
-TOPIC_FILTER = "system_button_event"
 RESET_EVENT = "long_long_click"
 
 
@@ -24,9 +23,8 @@ def config_update_callback():
 
 
 def button_event_callback(event):
-    payload = event.replace(TOPIC_FILTER, ' ').strip()
-    logger.debug(f"'{payload}' event received")
-    if payload == RESET_EVENT:
+    logger.debug(f"'{event}' event received")
+    if event == RESET_EVENT:
         yaml_handler.reset()
 
 
@@ -46,7 +44,7 @@ if __name__ == "__main__":
     server = ReplyServer(yaml_handler, port=SERVER_PORT)
     server.start()
 
-    client = SubClient(topic_filter=TOPIC_FILTER, on_message_callback=button_event_callback, port=CLIENT_PORT)
+    client = SubClient(on_message_callback=button_event_callback, port=CLIENT_PORT)
     client.start()
 
     signal.signal(signal.SIGINT, signal_handler)

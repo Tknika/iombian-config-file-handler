@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 class SubClient():
 
-    def __init__(self, topic_filter, on_message_callback=None, host="127.0.0.1", port=5556):
+    def __init__(self, topic_filter=None, on_message_callback=None, host="127.0.0.1", port=5556):
         self.topic_filter = topic_filter
         self.on_message_callback = on_message_callback
         self.host = host
@@ -26,6 +26,8 @@ class SubClient():
         self.socket.connect(self.addr)
         if self.topic_filter:
             self.socket.subscribe(self.topic_filter)
+        else:
+            self.socket.subscribe("")
         
         self.listen = True
         self.listen_thread = threading.Thread(target=self.__listen)
