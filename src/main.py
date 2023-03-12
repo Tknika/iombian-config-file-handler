@@ -25,17 +25,20 @@ def config_update_callback():
 def button_event_callback(event):
     logger.debug(f"'{event}' event received")
     if event == RESET_EVENT:
+        logger.info("Resetting 'parameters.yaml' file")
         yaml_handler.reset()
 
 
 def signal_handler(sig, frame):
     logger.info("Stopping IoMBian Config File Handler")
-    server.stop()
-    client.stop()
+    if server: server.stop()
+    if client: client.stop()
 
 
 if __name__ == "__main__":
     logger.info("Starting IoMBian Config File Handler")
+    
+    server, client = None, None
 
     yaml_handler = IoMBianYAMLHandler(YAML_FILE_PATH)
     yaml_handler.on_config_update(config_update_callback)
