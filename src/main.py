@@ -8,7 +8,8 @@ from iombian_yaml_handler import IoMBianYAMLHandler
 from reply_server import ReplyServer
 from sub_client import SubClient
 
-logging.basicConfig(format='%(asctime)s %(levelname)-8s - %(name)-16s - %(message)s', level=logging.INFO)
+logging.basicConfig(
+    format='%(asctime)s %(levelname)-8s - %(name)-16s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 YAML_FILE_PATH = "/boot/config/parameters.yml"
@@ -17,8 +18,21 @@ CLIENT_PORT = 5556
 RESET_EVENT = "long_long_click"
 
 
+def stop():
+    logger.info("Stopping IoMBian Config File Handler")
+    if server:
+        server.stop()
+    if client:
+        client.stop()
+
+
+def signal_handler(sig, frame):
+    stop()
+
+
 def config_update_callback():
     logger.info("Rebooting the system")
+    stop()
     os.system('reboot')
 
 
@@ -29,15 +43,9 @@ def button_event_callback(event):
         yaml_handler.reset()
 
 
-def signal_handler(sig, frame):
-    logger.info("Stopping IoMBian Config File Handler")
-    if server: server.stop()
-    if client: client.stop()
-
-
 if __name__ == "__main__":
     logger.info("Starting IoMBian Config File Handler")
-    
+
     server, client = None, None
 
     yaml_handler = IoMBianYAMLHandler(YAML_FILE_PATH)
@@ -47,7 +55,8 @@ if __name__ == "__main__":
     server = ReplyServer(yaml_handler, port=SERVER_PORT)
     server.start()
 
-    client = SubClient(on_message_callback=button_event_callback, port=CLIENT_PORT)
+    client = SubClient(
+        on_message_callback=button_event_callback, port=CLIENT_PORT)
     client.start()
 
     signal.signal(signal.SIGINT, signal_handler)

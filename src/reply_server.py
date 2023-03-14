@@ -32,8 +32,10 @@ class ReplyServer():
         if self.listen_thread:
             self.listen_thread.join()
             self.listen_thread = None
-        self.socket.close()
-        self.context.term()
+        if self.socket and not self.socket.closed:
+            self.socket.close()
+        if self.context:
+            self.context.term()
 
     def __listen(self):
         while self.listen:
@@ -50,7 +52,8 @@ class ReplyServer():
             try:
                 command_function = getattr(self.commands_provider, req_command)
             except AttributeError:
-                logger.error(f"Non existing command '{req_command}' has been requested")
+                logger.error(
+                    f"Non existing command '{req_command}' has been requested")
                 self.socket.send_json(None)
                 continue
 

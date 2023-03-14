@@ -22,13 +22,14 @@ class SubClient():
         self.listen = False
 
     def start(self):
-        logger.debug(f"Starting subscription client ('{self.host}:{self.port}')")
+        logger.debug(
+            f"Starting subscription client ('{self.host}:{self.port}')")
         self.socket.connect(self.addr)
         if self.topic_filter:
             self.socket.subscribe(self.topic_filter)
         else:
             self.socket.subscribe("")
-        
+
         self.listen = True
         self.listen_thread = threading.Thread(target=self.__listen)
         self.listen_thread.start()
@@ -39,9 +40,11 @@ class SubClient():
         if self.listen_thread:
             self.listen_thread.join()
             self.listen_thread = None
-        self.socket.disconnect(self.addr)
-        self.socket.close()
-        self.context.term()
+        if self.socket and not self.socket.closed:
+            self.socket.disconnect(self.addr)
+            self.socket.close()
+        if self.context:
+            self.context.term()
 
     def __listen(self):
         logger.debug("Starting listen thread")
@@ -54,5 +57,6 @@ class SubClient():
 
             logger.debug(f"Message '{message}' received")
             if self.on_message_callback:
-                threading.Thread(target=self.on_message_callback, args=[message]).start()
+                threading.Thread(target=self.on_message_callback,
+                                 args=[message]).start()
         logger.debug("Stopping listen thread")
