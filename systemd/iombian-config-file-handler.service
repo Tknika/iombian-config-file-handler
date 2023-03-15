@@ -6,6 +6,7 @@ Type=simple
 User=root
 Restart=always
 RestartSec=5
+TimeoutStopSec=5
 
 WorkingDirectory=/opt/iombian-config-file-handler
 ExecStart=/opt/iombian-config-file-handler/venv/bin/python /opt/iombian-config-file-handler/main.py
