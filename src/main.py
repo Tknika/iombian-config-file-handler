@@ -8,14 +8,16 @@ from iombian_yaml_handler import IoMBianYAMLHandler
 from reply_server import ReplyServer
 from sub_client import SubClient
 
-logging.basicConfig(
-    format='%(asctime)s %(levelname)-8s - %(name)-16s - %(message)s', level=logging.INFO)
-logger = logging.getLogger(__name__)
-
 YAML_FILE_PATH = "/boot/config/parameters.yml"
-SERVER_PORT = 5555
-CLIENT_PORT = 5556
-RESET_EVENT = "long_long_click"
+BUTTON_EVENTS_HOST = os.environ.get("BUTTON_EVENTS_HOST", "127.0.0.1")
+BUTTON_EVENTS_PORT = int(os.environ.get("BUTTON_EVENTS_PORT", 5556))
+CONFIG_PORT = int(os.environ.get("CONFIG_PORT", 5555))
+RESET_EVENT = os.environ.get("RESET_EVENT", "long_long_click")
+LOG_LEVEL = os.environ.get("LOG_LEVEL", logging.INFO)
+
+logging.basicConfig(
+    format='%(asctime)s %(levelname)-8s - %(name)-16s - %(message)s', level=LOG_LEVEL)
+logger = logging.getLogger(__name__)
 
 
 def stop():
@@ -52,11 +54,11 @@ if __name__ == "__main__":
     yaml_handler.on_config_update(config_update_callback)
     yaml_handler.load_file()
 
-    server = ReplyServer(yaml_handler, port=SERVER_PORT)
+    server = ReplyServer(yaml_handler, port=CONFIG_PORT)
     server.start()
 
     client = SubClient(
-        on_message_callback=button_event_callback, port=CLIENT_PORT)
+        on_message_callback=button_event_callback, host=BUTTON_EVENTS_HOST, port=BUTTON_EVENTS_PORT)
     client.start()
 
     signal.signal(signal.SIGINT, signal_handler)

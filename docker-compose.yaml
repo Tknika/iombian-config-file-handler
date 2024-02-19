@@ -1,0 +1,19 @@
+services:
+  iombian-config-file-handler:
+    image: iombian-config-file-handler
+    container_name: iombian-config-file-handler
+    # restart: unless-stopped
+    volumes:
+      - /boot/config/parameters.yml:/boot/config/parameters.yml
+    environment:
+      BUTTON_EVENTS_PORT: ${BUTTON_EVENTS_PORT:-5556}
+      CONFIG_PORT: ${CONFIG_PORT:-5555}
+      RESET_EVENT: ${RESET_EVENT:-long_long_click}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO} 
+      BUTTON_EVENTS_HOST: ${BUTTON_EVENTS_PORT:-iombian-button-handler}
+    networks:
+      - iombian-internal-services 
+
+networks:
+  iombian-internal-services:
+    external: true
