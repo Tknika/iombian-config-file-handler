@@ -8,12 +8,12 @@ from iombian_yaml_handler import IoMBianYAMLHandler
 from reply_server import ReplyServer
 from sub_client import SubClient
 
-BUTTON_EVENTS_HOST = os.environ.get("BUTTON_EVENTS_HOST", "127.0.0.1")
 CONFIG_PORT = int(os.environ.get("CONFIG_PORT", 5555))
 RESET_EVENT = os.environ.get("RESET_EVENT", "long_long_click")
 LOG_LEVEL = os.environ.get("LOG_LEVEL", logging.INFO)
 
 YAML_FILE_PATH = "/boot/config/parameters.yml"
+BUTTON_EVENTS_HOST = "iombian-button-handler"
 BUTTON_EVENTS_PORT = 5556
 PUBLISHER_HOST = "0.0.0.0"
 
