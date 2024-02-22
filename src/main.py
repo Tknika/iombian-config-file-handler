@@ -8,12 +8,14 @@ from iombian_yaml_handler import IoMBianYAMLHandler
 from reply_server import ReplyServer
 from sub_client import SubClient
 
-YAML_FILE_PATH = "/boot/config/parameters.yml"
 BUTTON_EVENTS_HOST = os.environ.get("BUTTON_EVENTS_HOST", "127.0.0.1")
-BUTTON_EVENTS_PORT = int(os.environ.get("BUTTON_EVENTS_PORT", 5556))
 CONFIG_PORT = int(os.environ.get("CONFIG_PORT", 5555))
 RESET_EVENT = os.environ.get("RESET_EVENT", "long_long_click")
 LOG_LEVEL = os.environ.get("LOG_LEVEL", logging.INFO)
+
+YAML_FILE_PATH = "/boot/config/parameters.yml"
+BUTTON_EVENTS_PORT = 5556
+PUBLISHER_HOST = "0.0.0.0"
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)-8s - %(name)-16s - %(message)s', level=LOG_LEVEL)
@@ -35,7 +37,7 @@ def signal_handler(sig, frame):
 def config_update_callback():
     logger.info("Rebooting the system")
     stop()
-    os.system('reboot')
+    os.system('systemctl reboot')
 
 
 def button_event_callback(event):
@@ -54,7 +56,7 @@ if __name__ == "__main__":
     yaml_handler.on_config_update(config_update_callback)
     yaml_handler.load_file()
 
-    server = ReplyServer(yaml_handler, port=CONFIG_PORT)
+    server = ReplyServer(yaml_handler, host=PUBLISHER_HOST, port=CONFIG_PORT)
     server.start()
 
     client = SubClient(
