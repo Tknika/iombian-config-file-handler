@@ -11,10 +11,10 @@ from sub_client import SubClient
 CONFIG_PORT = int(os.environ.get("CONFIG_PORT", 5555))
 RESET_EVENT = os.environ.get("RESET_EVENT", "long_long_click")
 LOG_LEVEL = os.environ.get("LOG_LEVEL", logging.INFO)
+BUTTON_EVENTS_HOST = os.environ.get("BUTTON_EVENTS_HOST ", "iombian-button-handler")
+BUTTON_EVENTS_PORT = int(os.environ.get("BUTTON_EVENTS_PORT" , 5556))
 
 YAML_FILE_PATH = "/boot/config/parameters.yml"
-BUTTON_EVENTS_HOST = "iombian-button-handler"
-BUTTON_EVENTS_PORT = 5556
 PUBLISHER_HOST = "0.0.0.0"
 
 logging.basicConfig(
