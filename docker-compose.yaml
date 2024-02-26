@@ -7,7 +7,7 @@ services:
     ports:
       - ${CONFIG_PORT:-5555}:5555
     volumes:
-      - /boot/config/parameters.yml:/boot/config/parameters.yml
+      - /boot/config/parameters.yml:/app/parameters.yml
       - /run/systemd/system:/run/systemd/system
       - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
       - /bin/systemctl:/bin/systemctl
@@ -15,6 +15,7 @@ services:
       CONFIG_PORT: ${CONFIG_PORT:-5555}
       RESET_EVENT: ${RESET_EVENT:-long_long_click}
       LOG_LEVEL: ${LOG_LEVEL:-INFO} 
+      BUTTON_EVENTS_HOST: iombian-button-handler
     networks:
       - iombian-internal-services 
 
