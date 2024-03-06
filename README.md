@@ -61,12 +61,9 @@ For example: `docker build -t iombian-config-file-handler:latest .`
 
 After building the image, execute it with docker run
 
-`docker run --name ${CONTAINER_NAME} --privileged --rm -d -p 5555:5555 -v /run/systemd/system:/run/systemd/system -v /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket -v /bin/systemctl:/bin/systemctl -v /boot/config/parameters.yml:/app/parameters.yml -e RESET_EVENT=tripe_click`
+`docker run --name ${CONTAINER_NAME}  --rm -d -p 5555:5555 -v /boot/config/parameters.yml:/app/parameters.yml -e RESET_EVENT=tripe_click`
 
 - --name is used to define the name of the created container.
-
-- -privileged is for granting privileges to the docker container.
-This is needed because the iombian-button-handler needs to create a thread to listen to the button events.
 
 - --rm can be used to delete the container when it stops.
 This parameter is optional.
@@ -80,9 +77,7 @@ The 5555 port is where other services will need to connect to get the configurat
 The port is exposed so the services from outside the containers network can access to the configuration.
 
 - -v is used to pass a volume to the container.
-The first three volumes are used to give the container acces to some files.
-This volumes are necessary so the container can reboot the host machine.
-The last volume is used to access the machine configuration from the container.
+The passed volume is used to access the machine configuration from the container.
 
 - -e can be used to define the environment variables:
     - CONFIG_PORT: the port where the services will connect to acces the configuration.
