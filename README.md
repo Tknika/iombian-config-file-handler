@@ -63,23 +63,23 @@ After building the image, execute it with docker run
 
 `docker run --name ${CONTAINER_NAME}  --rm -d -p 5555:5555 -v /boot/config/parameters.yml:/app/parameters.yml -e RESET_EVENT=tripe_click`
 
-- --name is used to define the name of the created container.
+- **--name** is used to define the name of the created container.
 
-- --rm can be used to delete the container when it stops.
+- **--rm** can be used to delete the container when it stops.
 This parameter is optional.
 
-- -d is used to run the container detached.
+- **-d** is used to run the container detached.
 This way the container will run in the background.
 This parameter is optional.
 
-- -p is used to expose the internal 5555 port to the external 5555 port.
+- **-p** is used to expose the internal 5555 port to the external 5555 port.
 The 5555 port is where other services will need to connect to get the configuration information.
 The port is exposed so the services from outside the containers network can access to the configuration.
 
-- -v is used to pass a volume to the container.
+- **-v** is used to pass a volume to the container.
 The passed volume is used to access the machine configuration from the container.
 
-- -e can be used to define the environment variables:
+- **-e** can be used to define the environment variables:
     - CONFIG_PORT: the port where the services will connect to acces the configuration.
     Default value is 5555.
     - RESET_EVENT: the button event to reset the raspberry.
