@@ -61,7 +61,7 @@ For example: `docker build -t iombian-config-file-handler:latest .`
 
 After building the image, execute it with docker run
 
-`docker run --name ${CONTAINER_NAME}  --rm -d -p 5555:5555 -v /boot/config/parameters.yml:/app/parameters.yml -e RESET_EVENT=tripe_click`
+`docker run --name ${CONTAINER_NAME} --rm -d -p 5555:5555 -v /boot/config/parameters.yml:/app/parameters.yml -e RESET_EVENT=tripe_click`
 
 - **--name** is used to define the name of the created container.
 
@@ -93,6 +93,10 @@ The passed volume is used to access the machine configuration from the container
     Default value is 5556.
     - YAML_FILE_PATH: The path where the parameters.yml file is located inside the container.
     Default path is /app/parameters.yml.
+    - SHUTDOWN_HOST: The host where the reboot event will be sent.
+    Default value is "127.0.0.1"
+    - SHUTDOWN_PORT: The port where the reboot event will be sent.
+    Default value is 5558
 
 ## Author
 
