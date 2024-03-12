@@ -80,9 +80,9 @@ The port is exposed so the services from outside the containers network can acce
 The passed volume is used to access the machine configuration from the container.
 
 - **-e** can be used to define the environment variables:
-    - CONFIG_PORT: the port where the services will connect to acces the configuration.
+    - CONFIG_PORT: the port where the services will connect to access the configuration.
     Default value is 5555.
-    - RESET_EVENT: the button event to reset the raspberry.
+    - RESET_EVENT: the button event that should trigger the reset of the IoMBian device.
     Default value is long_long_click.
     - LOG_LEVEL: define the log level for the python logger.
     This can be NOTSET, DEBUG, INFO, WARNING, ERROR or CRITICAL.
@@ -93,9 +93,9 @@ The passed volume is used to access the machine configuration from the container
     Default value is 5556.
     - YAML_FILE_PATH: The path where the parameters.yml file is located inside the container.
     Default path is /app/parameters.yml.
-    - SHUTDOWN_HOST: The host where the reboot event will be sent.
+    - SHUTDOWN_HOST: The host where the reboot command will be sent.
     Default value is "127.0.0.1"
-    - SHUTDOWN_PORT: The port where the reboot event will be sent.
+    - SHUTDOWN_PORT: The port where the reboot command will be sent.
     Default value is 5558
 
 ## Author

@@ -45,7 +45,6 @@ def config_update_callback():
     logger.debug(f"Sending {RESET_COMMAND} command to {SHUTDOWN_HOST}:{SHUTDOWN_PORT}")
     comm_module.execute_command(RESET_COMMAND)
     stop()
-    # os.system('systemctl reboot')
 
 
 def button_event_callback(event):
