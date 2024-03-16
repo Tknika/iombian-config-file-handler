@@ -61,7 +61,7 @@ For example: `docker build -t iombian-config-file-handler:latest .`
 
 After building the image, execute it with docker run
 
-`docker run --name ${CONTAINER_NAME} --rm -d -p 5555:5555 -v /boot/config/parameters.yml:/app/parameters.yml -e RESET_EVENT=tripe_click`
+`docker run --name ${CONTAINER_NAME} --rm -d -p 5555:5555 -v /boot/config/parameters.yml:/app/parameters.yml -e RESET_EVENT=tripe_click iombian-config-file-handler:latest`
 
 - **--name** is used to define the name of the created container.
 

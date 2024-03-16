@@ -18,7 +18,7 @@ YAML_FILE_PATH = os.environ.get("YAML_FILE_PATH", "/app/parameters.yml")
 SHUTDOWN_HOST = os.environ.get("SHUTDOWN_HOST", "127.0.0.1")
 SHUTDOWN_PORT = int(os.environ.get("SHUTDOWN_PORT", 5558))
 
-PUBLISHER_HOST = "0.0.0.0"
+CONFIG_HOST = "0.0.0.0"
 RESET_COMMAND = "reboot"
 
 logging.basicConfig(
@@ -63,7 +63,7 @@ if __name__ == "__main__":
     yaml_handler.on_config_update(config_update_callback)
     yaml_handler.load_file()
 
-    server = ReplyServer(yaml_handler, host=PUBLISHER_HOST, port=CONFIG_PORT)
+    server = ReplyServer(yaml_handler, host=CONFIG_HOST, port=CONFIG_PORT)
     server.start()
 
     client = SubClient(
