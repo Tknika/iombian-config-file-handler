@@ -51,6 +51,53 @@ The communication must be done through a ZeroMQ socket (5555 port by default), f
 
 > ```sudo systemctl enable ${PROJECT_NAME}.service && sudo systemctl start ${PROJECT_NAME}.service```
 
+## Docker
+
+To build the docker image, from the cloned repository, execute the docker build command in the same level as the Dockerfile.
+
+`docker build -t ${IMAGE_NAME}:${IMAGE_VERSION} .`
+
+For example: `docker build -t iombian-config-file-handler:latest .`
+
+After building the image, execute it with docker run
+
+`docker run --name ${CONTAINER_NAME} --rm -d -p 5555:5555 -v /boot/config/parameters.yml:/app/parameters.yml -e RESET_EVENT=tripe_click iombian-config-file-handler:latest`
+
+- **--name** is used to define the name of the created container.
+
+- **--rm** can be used to delete the container when it stops.
+This parameter is optional.
+
+- **-d** is used to run the container detached.
+This way the container will run in the background.
+This parameter is optional.
+
+- **-p** is used to expose the internal 5555 port to the external 5555 port.
+The 5555 port is where other services will need to connect to get the configuration information.
+The port is exposed so the services from outside the containers network can access to the configuration.
+
+- **-v** is used to pass a volume to the container.
+The passed volume is used to access the machine configuration from the container.
+
+- **-e** can be used to define the environment variables:
+    - CONFIG_PORT: the port where the services will connect to access the configuration.
+    Default value is 5555.
+    - RESET_EVENT: the button event that should trigger the reset of the IoMBian device.
+    Default value is long_long_click.
+    - LOG_LEVEL: define the log level for the python logger.
+    This can be NOTSET, DEBUG, INFO, WARNING, ERROR or CRITICAL.
+    Default value is INFO.
+    - BUTTON_EVENTS_HOST: the host where the button events will be published.
+    Default value is the localhost 127.0.0.1.
+    - BUTTON_EVENTS_PORT: the port where the button events will be published.
+    Default value is 5556.
+    - YAML_FILE_PATH: The path where the parameters.yml file is located inside the container.
+    Default path is /app/parameters.yml.
+    - SHUTDOWN_HOST: The host where the reboot command will be sent.
+    Default value is "127.0.0.1"
+    - SHUTDOWN_PORT: The port where the reboot command will be sent.
+    Default value is 5558
+
 ## Author
 
 (c) 2021 [Aitor Iturrioz Rodríguez](https://github.com/bodiroga)
