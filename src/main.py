@@ -15,8 +15,8 @@ LOG_LEVEL = os.environ.get("LOG_LEVEL", logging.INFO)
 BUTTON_EVENTS_HOST = os.environ.get("BUTTON_EVENTS_HOST", "127.0.0.1")
 BUTTON_EVENTS_PORT = int(os.environ.get("BUTTON_EVENTS_PORT" , 5556))
 YAML_FILE_PATH = os.environ.get("YAML_FILE_PATH", "/app/parameters.yml")
-SHUTDOWN_SERVICE_HOST = os.environ.get("SHUTDOWN_HOST", "127.0.0.1")
-SHUTDOWN_SERVICE_PORT = int(os.environ.get("SHUTDOWN_PORT", 5558))
+SHUTDOWN_SERVICE_HOST = os.environ.get("SHUTDOWN_SERVICE_HOST", "127.0.0.1")
+SHUTDOWN_SERVICE_PORT = int(os.environ.get("SHUTDOWN_SERVICE_PORT", 5558))
 
 CONFIG_HOST = "0.0.0.0"
 RESET_COMMAND = "reboot"
