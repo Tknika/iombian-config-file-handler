@@ -93,9 +93,9 @@ The passed volume is used to access the machine configuration from the container
     Default value is 5556.
     - YAML_FILE_PATH: The path where the parameters.yml file is located inside the container.
     Default path is /app/parameters.yml.
-    - SHUTDOWN_HOST: The host where the reboot command will be sent.
+    - SHUTDOWN_SERVICE_HOST: The host where the reboot command will be sent.
     Default value is "127.0.0.1"
-    - SHUTDOWN_PORT: The port where the reboot command will be sent.
+    - SHUTDOWN_SERVICE_PORT: The port where the reboot command will be sent.
     Default value is 5558
 
 ## Author
