@@ -5,9 +5,10 @@ Description=IoMBian Config File Handler
 Type=simple
 User=root
 Restart=always
-RestartSec=5
+RestartSec=15
 TimeoutStopSec=5
 
+Environment="YAML_FILE_PATH=/boot/config/parameters.yml"
 WorkingDirectory=/opt/iombian-config-file-handler
 ExecStart=/opt/iombian-config-file-handler/venv/bin/python /opt/iombian-config-file-handler/main.py
 
